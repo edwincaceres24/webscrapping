@@ -4,7 +4,7 @@ const runBrowser = async () => {
 
 	const browser = await puppeteer.launch({headless:false});
   const page = await browser.newPage();
-	let productInfo;
+	const productInfo = []; 
 
   await page.goto('https://www.mercadolibre.com.pe/');
 
@@ -14,11 +14,14 @@ const runBrowser = async () => {
 		const searchButton = await page.click('.nav-icon-search')
 		await page.waitForSelector('.ui-search-result__content-wrapper')
 		
-		const products = await page.$$eval('.ui-search-result__content-wrapper', elements => {
-			console.log(elements.lenght)
-			return elements.map(ele=>console.log(ele.textContent))
-		})
+		await page.evaluate((productInfo)=> {
+			const productPrice = [...document.querySelectorAll('.price-tag-amount')]
+			const productName = [...document.querySelectorAll('h2.ui-search-item__title')]
+			const addingInfo = ()=> productPrice.map(element =>productInfo.push(element.textContent ))
+	
+		}, productInfo)
 
+		console.log(productInfo)
 
 	}catch(err){
 		console.log('You have an error:')
