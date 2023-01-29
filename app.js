@@ -1,21 +1,22 @@
 const puppeteer = require('puppeteer');
 
-const run = async () => {
+function run() {  
 
-	const browser = await puppeteer.launch({headless:false});
-  const page = await browser.newPage();
-	const productInfo=[] 
-
-  await page.goto('https://www.mercadolibre.com.pe/');
+	return new Promise (async (resolve,reject) => {
 
 	try{
-		
+	
+		const browser = await puppeteer.launch({headless:false});
+		const page = await browser.newPage();
+
+ 		await page.goto('https://www.mercadolibre.com.pe/');	
 		await page.type('.nav-search-input', 'Iphone')
 		await page.click('.nav-icon-search')
 		await page.waitForSelector('.ui-search-result__content-wrapper')
 		
-		const output =await page.evaluate((productInfo)=> {
+		let output =await page.evaluate(()=> {
 			
+			const productInfo=[]  //This should be the output from NodeJs environment
 			const productContainers = [...document.querySelectorAll('.ui-search-result__wrapper')] 
 			
 			productContainers.map(container=>{
@@ -26,14 +27,14 @@ const run = async () => {
 
 			})
 			console.log(productInfo) //From the browser
-		}, productInfo)
-	return output
-
+			return productInfo;
+		})
+	return resolve(output)
 	}catch(err){
-		console.log('You have an error:')
-		console.error(err)
+		return reject(err)
 	}
-}
+})}
 
 run()
 	.then(console.log)
+	.catch(console.error)
