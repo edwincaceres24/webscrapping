@@ -14,11 +14,17 @@ function run() {
 		await page.click('.nav-icon-search')
 		await page.waitForSelector('.ui-search-result__content-wrapper')
 		
+
+
+//We must start a loop here
 		let output =await page.evaluate(()=> {
 			
-			const productInfo=[]  //This should be the output from NodeJs environment
+			const productInfo=[]  
 			const productContainers = [...document.querySelectorAll('.ui-search-result__wrapper')] 
-			
+			const pages= document.querySelector('.andes-pagination__page-count').textContent
+			const pagesCount = parseInt(pages.replace(/\D/g, ''))
+			const nextPageButton = document.querySelector('a.andes-pagination__link').getAttribute('href')
+			let currentPage = 1
 			productContainers.map(container=>{
 			
 				const price = container.querySelector('.price-tag-amount').textContent
@@ -27,8 +33,13 @@ function run() {
 				productInfo.push({"Name": name, "Price": price, "Url": url})
 
 			})
+			//After this we should concat the results of the current page for what we already have
+
+			//Set an additional conditional to click on next page. Then increase the value
+//
 			console.log(productInfo) 
-			return productInfo //Return the output whose variable is defined in the scope of the Browser
+			console.log('This is your current page ', currentPage)
+			return productInfo 
 		})
 	return resolve(output)
 	}catch(err){
@@ -37,5 +48,5 @@ function run() {
 })}
 
 run()
-	.then(console.log) //Console.log the output from the promise
+	.then(console.log) 
 	.catch(console.error)
