@@ -23,11 +23,12 @@ function run() {
 			
 				const price = container.querySelector('.price-tag-amount').textContent
 				const name = container.querySelector('h2.ui-search-item__title').textContent
-				productInfo.push({"Name": name, "Price": price})
+				const url = container.querySelector('a.ui-search-link').getAttribute('href')
+				productInfo.push({"Name": name, "Price": price, "Url": url})
 
 			})
-			console.log(productInfo) //From the browser
-			return productInfo;
+			console.log(productInfo) 
+			return productInfo //Return the output whose variable is defined in the scope of the Browser
 		})
 	return resolve(output)
 	}catch(err){
@@ -36,5 +37,5 @@ function run() {
 })}
 
 run()
-	.then(console.log)
+	.then(console.log) //Console.log the output from the promise
 	.catch(console.error)
