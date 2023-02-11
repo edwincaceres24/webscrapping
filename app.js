@@ -18,10 +18,9 @@ function run(pagesToScrape) {
 		await page.waitForSelector('.ui-search-result__content-wrapper')
 		let currentPage = 1
 		let results = []
-    
 		while (currentPage <= pagesToScrape) {
 
-		let output =await page.evaluate(()=> {
+		let output =await page.evaluate((currentPage)=> {
 			
 			const productInfo=[]  
 			const productContainers = [...document.querySelectorAll('.ui-search-result__wrapper')] 
@@ -34,30 +33,30 @@ function run(pagesToScrape) {
 				productInfo.push({"Name": name, "Price": priceInt, "Url": url})
 
 			})
-
 			console.log(productInfo) 
-			return productInfo 
-		})
+			return productInfo.slice(0,2) //Just getting the first value to 
+		},currentPage)
 
-			//After this we should concat the results of the current page for what we already have
-			results = [...Object.values(output)];
-		
-			if (currentPage < pagesToScrape) {
+			results = [...Object.values(output)]; //This is overwriting the value
+			if (currentPage < pagesToScrape) { 
 				await Promise.all([
+					await page.waitForSelector('li.andes-pagination__button'),
 					await page.click('a.andes-pagination__link'),
-					await page.waitForSelector('a.andes-pagination__link')
+					console.log(currentPage),
+					console.log(results)
 				])
 
 			}
 		currentPage++
 	
 	}
-	return resolve(results) //You should resolve results here
+		browser.close();
+		return resolve(results) 
 	}catch(err){
 		return reject(err)
 	}
 })}
 
 run(3)
-	.then(console.log) 
+	//.then(console.log) 
 	.catch(console.error)
