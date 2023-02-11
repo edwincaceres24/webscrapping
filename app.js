@@ -28,9 +28,10 @@ function run() {
 			productContainers.map(container=>{
 			
 				const price = container.querySelector('.price-tag-amount').textContent
+				const priceInt= parseInt(price.replace(/\D/g, ''))
 				const name = container.querySelector('h2.ui-search-item__title').textContent
 				const url = container.querySelector('a.ui-search-link').getAttribute('href')
-				productInfo.push({"Name": name, "Price": price, "Url": url})
+				productInfo.push({"Name": name, "Price": priceInt, "Url": url})
 
 			})
 			//After this we should concat the results of the current page for what we already have
