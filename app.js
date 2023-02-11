@@ -1,11 +1,13 @@
 const puppeteer = require('puppeteer');
 
-function run() {  
+function run(pagesToScrape) {  
 
 	return new Promise (async (resolve,reject) => {
 
 	try{
-	
+		if (!pagesToScrape) {
+                pagesToScrape = 1
+		}
 		const browser = await puppeteer.launch({headless:false});
 		const page = await browser.newPage();
 
@@ -48,6 +50,6 @@ function run() {
 	}
 })}
 
-run()
+run(3)
 	.then(console.log) 
 	.catch(console.error)
