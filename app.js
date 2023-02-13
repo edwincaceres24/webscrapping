@@ -7,7 +7,13 @@ function run(pagesToScrape) {
         pagesToScrape = 1
       }
 
-      const browser = await puppeteer.launch({ headless: true })
+      const browser = await puppeteer.launch({
+        headless: false,
+        slowMo: 0,
+        devtools: true,
+        args: ['--window-size=1920,1080'],
+        defaultViewport: null,
+      })
       const page = await browser.newPage()
 
       await page.goto('https://www.mercadolibre.com.pe/')
@@ -34,7 +40,7 @@ function run(pagesToScrape) {
               .getAttribute('href')
             productInfo.push({ Name: name, Price: priceInt, Url: url })
           })
-          //		console.log(productInfo)
+          console.log(productInfo)
           return productInfo.slice(0, 2) //Just getting the first value to
         }, currentPage)
 
@@ -48,7 +54,7 @@ function run(pagesToScrape) {
         }
         currentPage++
       }
-      browser.close()
+      //browser.close()
       return resolve(results)
     } catch (err) {
       return reject(err)
