@@ -8,8 +8,8 @@ function run(pagesToScrape) {
       }
 
       const browser = await puppeteer.launch({
-        headless: false,
-        slowMo: 0,
+        headless: true,
+        slowMo: 100,
         devtools: true,
         args: ['--window-size=1920,1080'],
         defaultViewport: null,
@@ -29,8 +29,12 @@ function run(pagesToScrape) {
             ...document.querySelectorAll('.ui-search-result__wrapper'),
           ]
           productContainers.map((container) => {
-            const price =
-              container.querySelector('.price-tag-amount').textContent
+            const priceContainer = container.querySelector(
+              '.ui-search-price__second-line'
+            )
+            const price = priceContainer.querySelector(
+              '.price-tag-fraction'
+            ).textContent
             const priceInt = parseInt(price.replace(/\D/g, ''))
             const name = container.querySelector(
               'h2.ui-search-item__title'
@@ -40,21 +44,20 @@ function run(pagesToScrape) {
               .getAttribute('href')
             productInfo.push({ Name: name, Price: priceInt, Url: url })
           })
-          console.log(productInfo)
-          return productInfo.slice(0, 2) //Just getting the first value to
+          //console.log(productInfo)
+          return productInfo
         }, currentPage)
 
-        results.push(output)
+        results.push(output) // Not working as expected
         if (currentPage < pagesToScrape) {
           await Promise.all([
             await page.waitForSelector('li.andes-pagination__button'),
-            await page.click('a.andes-pagination__link'),
-            console.log(currentPage),
+            await page.click('li.andes-pagination__button--next')
           ])
         }
         currentPage++
       }
-      //browser.close()
+      browser.close()
       return resolve(results)
     } catch (err) {
       return reject(err)
