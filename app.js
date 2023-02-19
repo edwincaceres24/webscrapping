@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer')
+const SEARCH_PRODUCT = process.argv.slice(2)[0]
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -8,7 +9,7 @@ function run(pagesToScrape) {
       }
 
       const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         slowMo: 100,
         devtools: true,
         args: ['--window-size=1920,1080'],
@@ -17,7 +18,7 @@ function run(pagesToScrape) {
       const page = await browser.newPage()
 
       await page.goto('https://www.mercadolibre.com.pe/')
-      await page.type('.nav-search-input', 'Iphone')
+      await page.type('.nav-search-input', SEARCH_PRODUCT)
       await page.click('.nav-icon-search')
       await page.waitForSelector('.ui-search-result__content-wrapper')
       let currentPage = 1
@@ -44,15 +45,13 @@ function run(pagesToScrape) {
               .getAttribute('href')
             productInfo.push({ Name: name, Price: priceInt, Url: url })
           })
-          //console.log(productInfo)
           return productInfo
         }, currentPage)
-
         results.push(output) // Not working as expected
         if (currentPage < pagesToScrape) {
           await Promise.all([
             await page.waitForSelector('li.andes-pagination__button'),
-            await page.click('li.andes-pagination__button--next')
+            await page.click('li.andes-pagination__button--next'),
           ])
         }
         currentPage++
