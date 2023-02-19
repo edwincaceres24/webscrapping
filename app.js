@@ -9,7 +9,7 @@ function run(pagesToScrape) {
       }
 
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         slowMo: 100,
         devtools: true,
         args: ['--window-size=1920,1080'],
@@ -24,7 +24,7 @@ function run(pagesToScrape) {
       let currentPage = 1
       let results = []
       while (currentPage <= pagesToScrape) {
-        let output = await page.evaluate((currentPage) => {
+        let output = await page.evaluate(() => {
           let productInfo = []
           const productContainers = [
             ...document.querySelectorAll('.ui-search-result__wrapper'),
@@ -36,7 +36,7 @@ function run(pagesToScrape) {
             const price = priceContainer.querySelector(
               '.price-tag-fraction'
             ).textContent
-            const priceInt = parseInt(price.replace(/\D/g, ''))
+            const priceInt = parseFloat(price.replace(/\D/g, ''))
             const name = container.querySelector(
               'h2.ui-search-item__title'
             ).textContent
@@ -46,7 +46,7 @@ function run(pagesToScrape) {
             productInfo.push({ Name: name, Price: priceInt, Url: url })
           })
           return productInfo
-        }, currentPage)
+        })
         results.push(output) // Not working as expected
         if (currentPage < pagesToScrape) {
           await Promise.all([
