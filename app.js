@@ -10,13 +10,12 @@ function run(pagesToScrape) {
 
       const browser = await puppeteer.launch({
         headless: true,
-        slowMo: 100,
+        slowMo: 150,
         devtools: true,
         args: ['--window-size=1920,1080'],
         defaultViewport: null,
       })
       const page = await browser.newPage()
-
       await page.goto('https://www.mercadolibre.com.pe/')
       await page.type('.nav-search-input', SEARCH_PRODUCT)
       await page.click('.nav-icon-search')
@@ -64,4 +63,4 @@ function run(pagesToScrape) {
   })
 }
 
-run(3).then(console.log).catch(console.error)
+run(2).then(console.log).catch(console.error)
