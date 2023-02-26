@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const SEARCH_PRODUCT = process.argv.slice(2)[0]
+const date = require('./functions/date')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -23,7 +24,7 @@ function run(pagesToScrape) {
       let currentPage = 1
       let results = []
       while (currentPage <= pagesToScrape) {
-        let output = await page.evaluate(() => {
+        let output = await page.evaluate((date) => {
           let productInfo = []
           const productContainers = [
             ...document.querySelectorAll('.ui-search-result__wrapper'),
@@ -42,10 +43,16 @@ function run(pagesToScrape) {
             const url = container
               .querySelector('a.ui-search-link')
               .getAttribute('href')
-            productInfo.push({ Name: name, Price: priceInt, Url: url })
+            productInfo.push({
+              Name: name,
+              Price: priceInt,
+              Url: url,
+              Date: date,
+              Vendor: 'Meli'
+            })
           })
           return productInfo
-        })
+        },date)
         results.push(output) // Not working as expected
         if (currentPage < pagesToScrape) {
           await Promise.all([
