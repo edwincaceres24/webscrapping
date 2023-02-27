@@ -10,7 +10,7 @@ function run(pagesToScrape) {
       }
 
       const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         slowMo: 150,
         devtools: true,
         args: ['--window-size=1920,1080'],
