@@ -10,7 +10,7 @@ function run(pagesToScrape) {
       }
 
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         slowMo: 150,
         devtools: true,
         args: ['--window-size=1920,1080'],
@@ -43,17 +43,17 @@ function run(pagesToScrape) {
             const url = container
               .querySelector('a.ui-search-link')
               .getAttribute('href')
-            productInfo.push({
+            productInfo.push([{
               Name: name,
               Price: priceInt,
               Url: url,
               Date: date,
               Vendor: 'Meli'
-            })
+            }])
           })
           return productInfo
         },date)
-        results.push(output) // Not working as expected
+        results=[...results,...output]
         if (currentPage < pagesToScrape) {
           await Promise.all([
             await page.waitForSelector('li.andes-pagination__button'),
