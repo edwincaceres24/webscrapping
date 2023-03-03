@@ -43,17 +43,19 @@ function run(pagesToScrape) {
             const url = container
               .querySelector('a.ui-search-link')
               .getAttribute('href')
-            productInfo.push([{
-              Name: name,
-              Price: priceInt,
-              Url: url,
-              Date: date,
-              Vendor: 'Meli'
-            }])
+            productInfo.push([
+              {
+                Name: name,
+                Price: priceInt,
+                Url: url,
+                Date: date,
+                Vendor: 'Meli',
+              },
+            ])
           })
           return productInfo
-        },date)
-        results=[...results,...output]
+        }, date)
+        results = [...results, ...output]
         if (currentPage < pagesToScrape) {
           await Promise.all([
             await page.waitForSelector('li.andes-pagination__button'),
