@@ -1,19 +1,18 @@
-const mysql = require('mysql')
+const mysql = require('mysql2')
 require('dotenv').config()
-const { HOST, USER, PASSWORD, PORT } = process.env
+const { RDS_HOST, RDS_USER, RDS_PASSWORD, RDS_PORT } = process.env
 
 const connection = mysql.createConnection({
-  host: HOST || 'host',
-  user: USER || 'root',
-  password: PASSWORD || 'password',
-  port: PORT || 'mydatabase',
+  host: RDS_HOST,
+  user: RDS_USER,
+  database:'Products',
+  password: RDS_PASSWORD
 })
 
-connection.connect();
- 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
+connection.query(
+  'SELECT name,price FROM P_Products', 
+  function (error, results, fields) {
+    if (error) throw error;
+    console.table(results)
 });
  
-connection.end();
