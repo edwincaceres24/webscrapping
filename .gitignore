@@ -2,3 +2,4 @@ node_modules/
 *.json
 .puppeteerc.cjs
 .env
+.product.js

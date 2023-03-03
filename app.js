@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer')
 const SEARCH_PRODUCT = process.argv.slice(2)[0]
 const date = require('./functions/date')
+const { sqlInsert } = require('./db')
+const products = require('./product')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -72,4 +74,12 @@ function run(pagesToScrape) {
   })
 }
 
-run(2).then(console.log).catch(console.error)
+const productList = products.products
+// run(2).then(console.log).catch(console.error)
+const values = productList
+  .map(
+    (product) =>
+      `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
+  )
+  .join(',')
+
