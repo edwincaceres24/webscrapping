@@ -1,30 +1,30 @@
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise')
 require('dotenv').config()
 const { RDS_HOST, RDS_USER, RDS_PASSWORD, RDS_PORT } = process.env
 
-const connection = mysql.createPool({
-  host: RDS_HOST,
-  user: RDS_USER,
-  database: 'Products',
-  password: RDS_PASSWORD,
-})
-
-// const sql = connection.query(
-//   'SELECT name,price FROM P_Products WHERE ID=?',
-//   [1],
-//   function (error, results, fields) {
-//     if (error) throw error
-//     console.table(results)
-//   }
-// )
-
-const statement = 'INSERT INTO P_Products (name, price, url, date, vendor ?'
-const sqlInsert = function (values) {
-  connection.query(statement, [values], function (error, results, fields) {
-    if (error) throw error
-    console.table(results)
+async function getConnection() {
+  const connection = await mysql.createConnection({
+    host: RDS_HOST,
+    user: RDS_USER,
+    database: 'Products',
+    password: RDS_PASSWORD,
   })
+  return connection
 }
 
-// exports.sql = sql
-exports.sqlInsert = sqlInsert
+async function searchDB() {
+  const connection = await getConnection()
+  const sql = await connection.query('SELECT * FROM P_Products')
+  connection.end()
+  return sql[0]
+}
+
+async function insertDB(values) {
+  const statement = 'INSERT INTO P_Products (name, price, url, date, vendor) VALUES ?)'
+  const connection = await getConnection()
+  const sql = await connection.query(statement, [values])
+  return sql
+}
+
+exports.searchDB = searchDB
+exports.insertDB = insertDB 

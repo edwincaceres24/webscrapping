@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer')
-const SEARCH_PRODUCT = process.argv.slice(2)[0]
+const productToSearch = process.argv.slice(2)[0]
 const date = require('./functions/date')
-const { sqlInsert } = require('./db')
+const { searchDB, insertDB } = require('./db')
 const products = require('./product')
 
 function run(pagesToScrape) {
@@ -20,7 +20,7 @@ function run(pagesToScrape) {
       })
       const page = await browser.newPage()
       await page.goto('https://www.mercadolibre.com.pe/')
-      await page.type('.nav-search-input', SEARCH_PRODUCT)
+      await page.type('.nav-search-input', productToSearch)
       await page.click('.nav-icon-search')
       await page.waitForSelector('.ui-search-result__content-wrapper')
       let currentPage = 1
@@ -74,12 +74,25 @@ function run(pagesToScrape) {
   })
 }
 
-const productList = products.products
+// const productList = products.products
 // run(2).then(console.log).catch(console.error)
-const values = productList
-  .map(
-    (product) =>
-      `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
-  )
-  .join(',')
+// const values = productList
+//   .map(
+//     (product) =>
+//       `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
+//   )
+//   .join(',')
 
+// console.log(values)
+
+async function main() {
+  const connection = await getConnection()
+  const sql = await connection.query('SELECT id,name,price FROM P_Products')
+  connection.end()
+  return sql[0]
+}
+
+
+insertDB(`("RTX-2060",1999,"www.mercadobe.com",2023-03-01,"MELI")`).then(console.log)
+
+searchDB().then(console.log)
