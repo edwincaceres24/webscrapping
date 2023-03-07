@@ -20,9 +20,9 @@ async function searchDB() {
 }
 
 async function insertDB(values) {
-  const statement = 'INSERT INTO P_Products (name, price, url, date, vendor) VALUES ?)'
+  const statement = `INSERT INTO P_Products (name, price, url, date, vendor) VALUES ${values}`
   const connection = await getConnection()
-  const sql = await connection.query(statement, [values])
+  const sql = await connection.query(statement)
   return sql
 }
 

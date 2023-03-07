@@ -76,6 +76,7 @@ function run(pagesToScrape) {
 
 // const productList = products.products
 // run(2).then(console.log).catch(console.error)
+
 // const values = productList
 //   .map(
 //     (product) =>
