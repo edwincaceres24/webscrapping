@@ -74,26 +74,23 @@ function run(pagesToScrape) {
   })
 }
 
-// const productList = products.products
-// run(2).then(console.log).catch(console.error)
+run(2)
+  .then((data) => {
+    return productQuery(data)
+  })
+  .then(query=>{
+    insertDB(query)
+  })
+  .then(console.log)
+  .then(()=>console.log('Database Updated, chino cagadotaSELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;s'))
+  .catch(console.error)
 
-// const values = productList
-//   .map(
-//     (product) =>
-//       `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
-//   )
-//   .join(',')
-
-// console.log(values)
-
-async function main() {
-  const connection = await getConnection()
-  const sql = await connection.query('SELECT id,name,price FROM P_Products')
-  connection.end()
-  return sql[0]
+const productQuery = function (productList) {
+  const query = productList
+    .map(
+      (product) =>
+        `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
+    )
+    .join(',')
+  return query
 }
-
-
-insertDB(`("RTX-2060",1999,"www.mercadobe.com",2023-03-01,"MELI")`).then(console.log)
-
-searchDB().then(console.log)

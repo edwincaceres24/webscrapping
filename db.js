@@ -27,4 +27,4 @@ async function insertDB(values) {
 }
 
 exports.searchDB = searchDB
-exports.insertDB = insertDB 
+exports.insertDB = insertDB
