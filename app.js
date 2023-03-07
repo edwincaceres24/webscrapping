@@ -82,7 +82,7 @@ run(2)
     insertDB(query)
   })
   .then(console.log)
-  .then(()=>console.log('Database Updated, chino cagadotaSELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;SELECT name,price,url FROM P_Products;s'))
+  .then(()=>console.log('Database Updated, chino cagadotas'))
   .catch(console.error)
 
 const productQuery = function (productList) {
