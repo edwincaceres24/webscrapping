@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
-const date = require('./functions/date')
+const formattedDate = require('./functions/date')
 const { searchDB, insertDB } = require('./db')
 const products = require('./product')
 
@@ -56,7 +56,7 @@ function run(pagesToScrape) {
             ])
           })
           return productInfo
-        }, date)
+        }, formattedDate)
         results = [...results, ...output]
         if (currentPage < pagesToScrape) {
           await Promise.all([
@@ -75,14 +75,9 @@ function run(pagesToScrape) {
 }
 
 run(2)
-  .then((data) => {
-    return productQuery(data)
-  })
-  .then(query=>{
-    insertDB(query)
-  })
-  .then(console.log)
-  .then(()=>console.log('Database Updated, chino cagadotas'))
+  .then((data) => productQuery(data))
+  .then((query) => insertDB(query))
+  .then(() => console.log('Database Updated with many registers'))
   .catch(console.error)
 
 const productQuery = function (productList) {
