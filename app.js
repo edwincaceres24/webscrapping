@@ -77,6 +77,8 @@ function run(pagesToScrape) {
 
 run(2)
   .then((data) => productQuery(data))
-  .then((query) => insertDB(query))
-  .then(() => console.log('Database Updated with many registers'))
+  .then((query) => {
+    insertDB(query[0])
+    console.log(`Database updated with ${query[1]} new registers`)
+  })
   .catch(console.error)

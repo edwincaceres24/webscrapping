@@ -20,7 +20,7 @@ async function searchDB() {
   const sql = await connection.query('SELECT * FROM P_Products')
   console.log('Connecting to DB')
   console.log(sql[0])
-  connection.end()
+  await connection.end()
   return sql[0]
 }
 
@@ -28,6 +28,7 @@ async function insertDB(values) {
   const statement = `INSERT INTO P_Products (name, price, url, date, vendor) VALUES ${values}`
   const connection = await getConnection()
   const sql = await connection.query(statement)
+  await connection.end()
   return sql
 }
 
