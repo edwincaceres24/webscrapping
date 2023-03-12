@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
 const formattedDate = require('./functions/date')
+const productQuery = require('./functions/productquery')
 const { searchDB, insertDB } = require('./db')
 const products = require('./product')
 
@@ -79,13 +80,3 @@ run(2)
   .then((query) => insertDB(query))
   .then(() => console.log('Database Updated with many registers'))
   .catch(console.error)
-
-const productQuery = function (productList) {
-  const query = productList
-    .map(
-      (product) =>
-        `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
-    )
-    .join(',')
-  return query
-}
