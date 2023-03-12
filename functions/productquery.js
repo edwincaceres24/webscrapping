@@ -3,7 +3,7 @@ const productQuery = function (productList) {
     const query = productList
       .map(
         (product) =>
-          `("${product[0].Name}", ${product[0].Price}, "${product[0].Url}", "${product[0].Date}", "${product[0].Vendor}")`
+          `("${product[0].name}", ${product[0].price}, "${product[0].url}", "${product[0].date}", "${product[0].vendor}")`
       )
       .join(',')
     return  [query,productLength]

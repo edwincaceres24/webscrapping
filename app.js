@@ -2,8 +2,7 @@ const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
 const formattedDate = require('./functions/date')
 const productQuery = require('./functions/productquery')
-const { searchDB, insertDB } = require('./db')
-const products = require('./product')
+const { insertDB } = require('./db')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -48,11 +47,11 @@ function run(pagesToScrape) {
               .getAttribute('href')
             productInfo.push([
               {
-                Name: name,
-                Price: priceInt,
-                Url: url,
-                Date: date,
-                Vendor: 'Meli',
+                name: name,
+                price: priceInt,
+                url: url,
+                date: date,
+                vendor: 'Meli',
               },
             ])
           })
