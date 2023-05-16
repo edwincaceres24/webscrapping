@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
+const productScrapping = require('./functions/scrapping')
 const formattedDate = require('./functions/date')
 const productQuery = require('./functions/productquery')
 const { insertDB } = require('./db')
@@ -26,40 +27,19 @@ function run(pagesToScrape) {
       let currentPage = 1
       let results = []
       while (currentPage <= pagesToScrape) {
-        let output = await page.evaluate((date) => {
-          let productInfo = []
+        let output = await page.evaluate(() => {
+          let urls = []
           const productContainers = [
             ...document.querySelectorAll('.ui-search-result__wrapper'),
           ]
           productContainers.map((container) => {
-            //Remove **
-            // const priceContainer = container.querySelector(
-            //   '.ui-search-price__second-line'
-            // )
-            // const price = priceContainer.querySelector(
-            //   '.price-tag-fraction'
-            // ).textContent
-            // const priceInt = parseFloat(price.replace(/\D/g, ''))
-            // const name = container.querySelector(
-            //   'h2.ui-search-item__title'
-            // ).textContent
-            // Until here
             const url = container
               .querySelector('a.ui-search-link')
               .getAttribute('href')
-            productInfo.push([
-              {
-                // name: name,
-                // price: priceInt,
-                // url: url,
-                url: url,
-                // date: date,
-                // vendor: 'Meli',
-              },
-            ])
+            urls.push(url)
           })
-          return productInfo
-        }, formattedDate)
+          return urls
+        })
         results = [...results, ...output]
         if (currentPage < pagesToScrape) {
           await Promise.all([
@@ -78,10 +58,11 @@ function run(pagesToScrape) {
 }
 
 run(2)
-  .then((data) => console.log(data))
-  // .then((data) => productQuery(data))
-  // .then((query) => {
-  //   insertDB(query[0])
-  //   console.log(`Database updated with ${query[1]} new registers`)
-  // })
+  .then((data) => productScrapping(data)) 
+  // .then((data) => console.log(data))
+  .then((data) => productQuery(data))
+  .then((query) => {
+    insertDB(query[0])
+    console.log(`Database updated with ${query[1]} new registers`)
+  })
   .catch(console.error)
