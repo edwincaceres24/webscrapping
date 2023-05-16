@@ -32,26 +32,29 @@ function run(pagesToScrape) {
             ...document.querySelectorAll('.ui-search-result__wrapper'),
           ]
           productContainers.map((container) => {
-            const priceContainer = container.querySelector(
-              '.ui-search-price__second-line'
-            )
-            const price = priceContainer.querySelector(
-              '.price-tag-fraction'
-            ).textContent
-            const priceInt = parseFloat(price.replace(/\D/g, ''))
-            const name = container.querySelector(
-              'h2.ui-search-item__title'
-            ).textContent
+            //Remove **
+            // const priceContainer = container.querySelector(
+            //   '.ui-search-price__second-line'
+            // )
+            // const price = priceContainer.querySelector(
+            //   '.price-tag-fraction'
+            // ).textContent
+            // const priceInt = parseFloat(price.replace(/\D/g, ''))
+            // const name = container.querySelector(
+            //   'h2.ui-search-item__title'
+            // ).textContent
+            // Until here
             const url = container
               .querySelector('a.ui-search-link')
               .getAttribute('href')
             productInfo.push([
               {
-                name: name,
-                price: priceInt,
+                // name: name,
+                // price: priceInt,
+                // url: url,
                 url: url,
-                date: date,
-                vendor: 'Meli',
+                // date: date,
+                // vendor: 'Meli',
               },
             ])
           })
@@ -75,9 +78,10 @@ function run(pagesToScrape) {
 }
 
 run(2)
-  .then((data) => productQuery(data))
-  .then((query) => {
-    insertDB(query[0])
-    console.log(`Database updated with ${query[1]} new registers`)
-  })
+  .then((data) => console.log(data))
+  // .then((data) => productQuery(data))
+  // .then((query) => {
+  //   insertDB(query[0])
+  //   console.log(`Database updated with ${query[1]} new registers`)
+  // })
   .catch(console.error)
