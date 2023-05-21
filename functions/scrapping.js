@@ -16,26 +16,32 @@ function productScrapping(urlArray){
 
         for (const url of urlArray){
             await page.goto(url)
+            try{
+
             const sellerRate = await page.$eval('.ui-seller-info .ui-thermometer', attr=> attr.getAttribute('value'))
             const sellerRateInt = parseInt(sellerRate)
 
-            const nameElement = await page.$('h1'); 
-            const priceElement = await page.$('.ui-pdp-price__second-line .andes-money-amount__fraction');
-            
+            const nameElement = await page.$('h1')
+            const priceElement = await page.$('.ui-pdp-price__second-line .andes-money-amount__fraction')
             
             const name = await page.evaluate(element => element.textContent, nameElement);
             const price = await page.evaluate(element => element.textContent, priceElement);
-            const date = await page.evaluate( date => date, formattedDate);
+            const priceNumber = parseFloat(price.replace(/\D/g, ''))
+            const date = await page.evaluate( date => date, formattedDate)
             
             if (sellerRateInt==5){
+            // console.log(name,priceNumber,url)
             productData.push([{ 
                     name: name, 
-                    price: price,
+                    price: priceNumber,
                     url: url, 
                     date: date, 
                     vendor: 'Meli'
                 }]
             )}
+            }catch(err){
+                console.error(err)
+            }
         }
         return resolve(productData)
     }

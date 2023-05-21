@@ -42,10 +42,12 @@ function run(pagesToScrape) {
         })
         results = [...results, ...output]
         if (currentPage < pagesToScrape) {
-          await Promise.all([
+          try {
             await page.waitForSelector('li.andes-pagination__button'),
-            await page.click('li.andes-pagination__button--next'),
-          ])
+              await page.click('li.andes-pagination__button--next')
+          } catch (err) {
+            console.error(err)
+          }
         }
         currentPage++
       }
@@ -58,8 +60,11 @@ function run(pagesToScrape) {
 }
 
 run(2)
-  .then((data) => productScrapping(data)) 
-  // .then((data) => console.log(data))
+  .then((data) => {
+    const items = data.length
+    console.log(`${items} products are being processed`)
+    return productScrapping(data)
+  })
   .then((data) => productQuery(data))
   .then((query) => {
     insertDB(query[0])
