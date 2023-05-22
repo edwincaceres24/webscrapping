@@ -19,7 +19,7 @@ async function searchDB(query) {
   const connection = await getConnection()
   const sql = await connection.query(query)
   console.log('Connecting to DB')
-  console.log(sql[0])
+  // console.log(sql[0])
   await connection.end()
   return sql[0]
 }
