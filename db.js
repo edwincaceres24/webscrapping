@@ -15,9 +15,11 @@ async function getConnection() {
   return connection
 }
 
-async function searchDB() {
+async function searchDB(name, lowprice, highprice) {
   const connection = await getConnection()
-  const sql = await connection.query('SELECT * FROM P_Products')
+  const sql = await connection.query(
+    `SELECT NAME,PRICE,URL,DATE FROM P_Products WHERE NAME LIKE "%${name}%" AND PRICE > ${lowprice} AND PRICE < ${highprice} ORDER BY PRICE DESC`
+  )
   console.log('Connecting to DB')
   console.log(sql[0])
   await connection.end()

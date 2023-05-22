@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
-const productScrapping = require('./functions/scrapping')
+const productScrapping = require('./functions/product-scrapping')
 const formattedDate = require('./functions/date')
-const productQuery = require('./functions/productquery')
-const { insertDB } = require('./db')
+const productQuery = require('./functions/query')
+const { insertDB, searchDB } = require('./db')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -69,5 +69,8 @@ run(2)
   .then((query) => {
     insertDB(query[0])
     console.log(`Database updated with ${query[1]} new registers`)
+  })
+  .then(() => {
+    searchDB('watch 41 mm', 1199, 1999)
   })
   .catch(console.error)
