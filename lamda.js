@@ -13,27 +13,49 @@ async function lambda(productName, lowPrice, highPrice) {
 
   const finalQuery = query1.concat(builder, query2)
   const result = await searchDB(finalQuery)
-  return bodyMessage(result) 
+  return bodyMessage(result)
+}
+
+function productFiltering(productArray) {
+  const result = Array.from(productArray).filter((productItem) => {
+    const { name, price } = productItem[0]
+    const searchTerm = 'Airpods 3'
+    const searchTermArray = searchTerm.split(' ')
+
+    return (
+      price >= 650 &&
+      price <= 899 &&
+      searchTermArray.some((word) => name.includes(word))
+    )
+  })
+
+  const resultQuantity = result.length
+  console.log(`${resultQuantity} products were filtered`)
+  return result
+}
+
+function sortingProducts(filteredArray) {
+  const result = filteredArray.sort((a, b) => a.price - b.price)
+  console.log('Sortering')
+  return console.log(result)
 }
 
 function bodyMessage(result) {
-  const resultLength=Object.keys(result).length
-  if(resultLength<=0){
+  const resultLength = Object.keys(result).length
+  if (resultLength <= 0) {
     console.log('No info to display')
-  }else{
+  } else {
     const bodyIntro = `Here are the products you were lookin for: \n`
-    let productList=''
-    result.forEach(element=>{
-      const { NAME, PRICE, URL}= element
-      productList+= `🔹 ${NAME} - ${PRICE} - ${URL} \n`
+    let productList = ''
+    result.forEach((element) => {
+      const { NAME, PRICE, URL } = element
+      productList += `🔹 ${NAME} - ${PRICE} - ${URL} \n`
     })
 
     const finalMessage = bodyIntro.concat(productList)
+    console.log(finalMessage)
     whastappTrigger(finalMessage)
   }
-
 }
 
-lambda('Apple Watch Series 7 41 mm', 1499, 1999)
-
-module.exports = lambda
+module.exports = { lambda, productFiltering, sortingProducts }

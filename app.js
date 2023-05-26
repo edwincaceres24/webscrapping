@@ -4,6 +4,7 @@ const productScrapping = require('./functions/product-scrapping')
 const formattedDate = require('./functions/date')
 const productQuery = require('./functions/query')
 const { insertDB, searchDB } = require('./db')
+const { productFiltering, sortingProducts } = require('./lamda')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -65,12 +66,14 @@ run(2)
     console.log(`${items} products are being processed`)
     return productScrapping(data)
   })
-  .then((data) => productQuery(data))
-  .then((query) => {
-    insertDB(query[0])
-    console.log(`Database updated with ${query[1]} new registers`)
-  })
-  .then(() => {
-    searchDB('watch 41 mm', 1199, 1999)
-  })
+  .then((data) => productFiltering(data))
+  .then((data) => sortingProducts(data))
+  // .then((data) => productQuery(data))// Remove this
+  // .then((query) => {
+  //   insertDB(query[0])
+  //   console.log(`Database updated with ${query[1]} new registers`)
+  // })
+  // .then(() => {
+  //   searchDB('watch 41 mm', 1199, 1999)
+  // })
   .catch(console.error)
