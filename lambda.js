@@ -24,7 +24,6 @@ function sortingProducts(filteredArray) {
 
 function bodyMessage(result) {
   const products = result.slice(0,3)
-  console.log(products)
   if (products.length <= 0) {
     console.log('No info to display')
   } else {
@@ -36,7 +35,7 @@ function bodyMessage(result) {
     })
 
     const completeMessage = bodyIntro.concat(productList)
-    whastappTrigger(finalMessage)
+    whastappTrigger(completeMessage)
   }
 }
 
