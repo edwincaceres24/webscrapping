@@ -30,14 +30,13 @@ function productScrapping(urlArray){
             const date = await page.evaluate( date => date, formattedDate)
             
             if (sellerRateInt==5){
-            // console.log(name,priceNumber,url)
-            productData.push([{ 
+            productData.push({ 
                     name: name, 
                     price: priceNumber,
                     url: url, 
                     date: date, 
                     vendor: 'Meli'
-                }]
+                }
             )}
             }catch(err){
                 console.error(err)
@@ -50,6 +49,5 @@ function productScrapping(urlArray){
     }
   })
 }
-
 
 module.exports= productScrapping 
