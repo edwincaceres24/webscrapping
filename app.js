@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
 const productScrapping = require('./functions/product-scrapping')
 const { bodyMessage, productFiltering, sortingProducts } = require('./lambda')
+const { whastappTrigger } = require('./sms')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -63,10 +64,7 @@ run(2)
     console.log(`${items} products are being scrapped`)
     return productScrapping(data)
   })
-  .then((products) => productFiltering(products, 650, 850,productToSearch))
+  .then((products) => productFiltering(products, 9, 150, productToSearch))
   .then((filteredProducts) => sortingProducts(filteredProducts))
-  .then((sortedProducts) => bodyMessage(sortedProducts))
+  .then((sortedProducts) => bodyMessage(sortedProducts, productToSearch))
   .catch(console.error)
-
-
-

@@ -1,6 +1,6 @@
 const { whastappTrigger } = require('./sms')
 
-function productFiltering(productArray, lowPrice, highPrice,searchTerm) {
+function productFiltering(productArray, lowPrice, highPrice, searchTerm) {
   const result = Array.from(productArray).filter((productItem) => {
     const { name, price } = productItem
     const searchTermArray = searchTerm.split(' ')
@@ -22,20 +22,20 @@ function sortingProducts(filteredArray) {
   return result
 }
 
-function bodyMessage(result) {
-  const products = result.slice(0,3)
+function bodyMessage(result, productName) {
+  const products = result.slice(0, 3)
   if (products.length <= 0) {
     console.log('No info to display')
   } else {
-    const bodyIntro = `Here are the products you were lookin for: \n`
+    const bodyIntro = `Here are the best prices for ${productName}: \n`
+    const completeMessage = bodyIntro.concat(productList)
     let productList = ''
     products.forEach((element) => {
-      const { name, price, url } = element
-      productList += `🔹 ${name} - ${price} - ${url} \n`
+      const { price, url } = element
+      productList += `* ${price} - ${url} \n`
     })
-
-    const completeMessage = bodyIntro.concat(productList)
-    whastappTrigger(completeMessage)
+    console.log(completeMessage)
+    return whastappTrigger(completeMessage)
   }
 }
 
