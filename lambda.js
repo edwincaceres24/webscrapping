@@ -28,12 +28,12 @@ function bodyMessage(result, productName) {
     console.log('No info to display')
   } else {
     const bodyIntro = `Here are the best prices for ${productName}: \n`
-    const completeMessage = bodyIntro.concat(productList)
     let productList = ''
     products.forEach((element) => {
       const { price, url } = element
       productList += `* ${price} - ${url} \n`
     })
+    const completeMessage = bodyIntro.concat(productList)
     console.log(completeMessage)
     return whastappTrigger(completeMessage)
   }
