@@ -1,8 +1,12 @@
 const puppeteer = require('puppeteer')
 const productToSearch = process.argv.slice(2)[0]
 const productScrapping = require('./functions/product-scrapping')
-const { bodyMessage, productFiltering, sortingProducts } = require('./lambda')
-const { whastappTrigger } = require('./sms')
+const {
+  bodyMessage,
+  productFiltering,
+  sortingProducts,
+} = require('./functions/lambda')
+const { whastappTrigger } = require('./functions/sms')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
