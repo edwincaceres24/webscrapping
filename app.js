@@ -6,7 +6,6 @@ const {
   productFiltering,
   sortingProducts,
 } = require('./functions/lambda')
-const { whastappTrigger } = require('./functions/sms')
 
 function run(pagesToScrape) {
   return new Promise(async (resolve, reject) => {
@@ -68,7 +67,7 @@ run(2)
     console.log(`${items} products are being scrapped`)
     return productScrapping(data)
   })
-  .then((products) => productFiltering(products, 9, 150, productToSearch))
+  .then((products) => productFiltering(products, 650, 899, productToSearch))
   .then((filteredProducts) => sortingProducts(filteredProducts))
   .then((sortedProducts) => bodyMessage(sortedProducts, productToSearch))
   .catch(console.error)

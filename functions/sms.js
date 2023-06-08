@@ -20,7 +20,7 @@ const whastappTrigger = function (message) {
       to: `${TWILIO_RECEIVER}`,
     })
     .then((message) => console.log(message.sid))
-  //   .done()
+    // .done()
 }
 
 exports.whastappTrigger = whastappTrigger
