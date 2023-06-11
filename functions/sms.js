@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '../.env' })
+require('dotenv').config()
+// require('dotenv').config({ path: '../.env' })
 const {
   TWILIO_ACCOUNTSIT,
   TWILIO_AUTH,
