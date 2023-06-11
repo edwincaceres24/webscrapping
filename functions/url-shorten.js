@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' })
+require('dotenv').config()
 const { TINYURL_TOKEN } = process.env
 const axios = require('axios')
 const longUrl = 'https://www.microsoft.com/es-pe/'
