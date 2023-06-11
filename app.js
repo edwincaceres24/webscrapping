@@ -1,6 +1,10 @@
 const puppeteer = require('puppeteer')
-const productToSearch = process.argv.slice(2)[0]
+const { formattingParameters}= require('./functions/parameter-formatting')
 const productScrapping = require('./functions/product-scrapping')
+const productInput = formattingParameters(process.argv.slice(2)[0])
+const productName = productInput[0] 
+const productLowPrice = productInput[1] 
+const productHighPrice = productInput[2] 
 const {
   bodyMessage,
   productFiltering,
@@ -23,7 +27,7 @@ function run(pagesToScrape) {
       })
       const page = await browser.newPage()
       await page.goto('https://www.mercadolibre.com.pe/')
-      await page.type('.nav-search-input', productToSearch)
+      await page.type('.nav-search-input', productName)
       await page.click('.nav-icon-search')
       await page.waitForSelector('.ui-search-result__content-wrapper')
       let currentPage = 1
@@ -67,7 +71,7 @@ run(2)
     console.log(`${items} products are being scrapped`)
     return productScrapping(data)
   })
-  .then((products) => productFiltering(products, 650, 899, productToSearch))
+  .then((products) => productFiltering(products, productLowPrice, productHighPrice, productName))
   .then((filteredProducts) => sortingProducts(filteredProducts))
-  .then((sortedProducts) => bodyMessage(sortedProducts, productToSearch))
+  .then((sortedProducts) => bodyMessage(sortedProducts, productName))
   .catch(console.error)
