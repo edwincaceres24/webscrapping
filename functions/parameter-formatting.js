@@ -1,6 +1,4 @@
-const productToSearch = process.argv.slice(2)[0]
-
-function formattingTerm(productInfo) {
+function formattingParameters(productInfo) {
   if (productInfo) {
     const parts = productInfo.split(',')
 
@@ -10,10 +8,10 @@ function formattingTerm(productInfo) {
 
     const productArray = [name, lowPrice, highPrice]
 
-    console.log(productArray)
+    return productArray
   } else {
     console.log('Please provide an input argument.')
   }
 }
 
-formattingTerm(productToSearch)
+module.exports = { formattingParameters }
