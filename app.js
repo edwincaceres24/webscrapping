@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer')
 const productScrapping = require('./functions/product-scrapping')
-const productName = 'airpods 2da generacion' 
-const productLowPrice = 699 
-const productHighPrice = 1099 
+const productName = 'airpods 2da generacion'
+const productLowPrice = 699
+const productHighPrice = 1099
 const {
   bodyMessage,
   productFiltering,
@@ -62,14 +62,17 @@ function run(pagesToScrape) {
     }
   })
 }
-
-run(2)
-  .then((data) => {
-    const items = data.length
-    console.log(`${items} products are being scrapped`)
-    return productScrapping(data)
-  })
-  .then((products) => productFiltering(products, productLowPrice, productHighPrice, productName))
-  .then((filteredProducts) => sortingProducts(filteredProducts))
-  .then((sortedProducts) => bodyMessage(sortedProducts, productName))
-  .catch(console.error)
+exports.handler = async (event, context) => {
+  return run(2)
+    .then((data) => {
+      const items = data.length
+      console.log(`${items} products are being scrapped`)
+      return productScrapping(data)
+    })
+    .then((products) =>
+      productFiltering(products, productLowPrice, productHighPrice, productName)
+    )
+    .then((filteredProducts) => sortingProducts(filteredProducts))
+    .then((sortedProducts) => bodyMessage(sortedProducts, productName))
+    .catch(console.error)
+}
