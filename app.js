@@ -1,10 +1,8 @@
 const puppeteer = require('puppeteer')
-const { formattingParameters}= require('./functions/parameter-formatting')
 const productScrapping = require('./functions/product-scrapping')
-const productInput = formattingParameters(process.argv.slice(2)[0])
-const productName = productInput[0] 
-const productLowPrice = productInput[1] 
-const productHighPrice = productInput[2] 
+const productName = 'airpods 2da generacion' 
+const productLowPrice = 699 
+const productHighPrice = 1099 
 const {
   bodyMessage,
   productFiltering,
