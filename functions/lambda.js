@@ -1,5 +1,4 @@
 const { whastappTrigger } = require('./sms')
-const { shortenUrl } = require('./url-shorten')
 
 function productFiltering(productArray, lowPrice, highPrice, searchTerm) {
   const result = Array.from(productArray).filter((productItem) => {
@@ -32,7 +31,6 @@ function bodyMessage(result, productName) {
     let productList = ''
     products.forEach((element) => {
       const { price, url } = element
-      // const shortUrl= await shortenUrl(url)
       productList += `* ${price} - ${url} \n`
     })
     const completeMessage = bodyIntro.concat(productList)
