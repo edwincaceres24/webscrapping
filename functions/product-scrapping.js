@@ -10,7 +10,7 @@ function productScrapping(urlArray) {
         slowMo: 150,
         executablePath: await chromium.executablePath,
         defaultViewport: null,
-        ignoreHTTPSErrors: true
+        ignoreHTTPSErrors: true,
       })
       const page = await browser.newPage()
       const productData = []
