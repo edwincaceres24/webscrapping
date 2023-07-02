@@ -3,3 +3,4 @@ node_modules/
 .puppeteerc.cjs
 .env
 .product.js
+.cache

@@ -1,15 +1,16 @@
-const puppeteer = require('puppeteer')
+const chromium = require('chrome-aws-lambda')
 const formattedDate = require('./date')
 
 function productScrapping(urlArray) {
   return new Promise(async (resolve, reject) => {
     try {
-      const browser = await puppeteer.launch({
-        headless: true,
+      const browser = await chromium.puppeteer.launch({
+        args: chromium.args,
+        headless: chromium.headless,
         slowMo: 150,
-        devtools: true,
-        args: ['--window-size=1920,1080'],
+        executablePath: await chromium.executablePath,
         defaultViewport: null,
+        ignoreHTTPSErrors: true
       })
       const page = await browser.newPage()
       const productData = []

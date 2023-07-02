@@ -1,5 +1,5 @@
-const puppeteer = require('puppeteer')
 const productScrapping = require('./functions/product-scrapping')
+const chromium = require('chrome-aws-lambda')
 const productName = 'airpods 2da generacion'
 const productLowPrice = 699
 const productHighPrice = 1099
@@ -16,12 +16,13 @@ function run(pagesToScrape) {
         pagesToScrape = 1
       }
 
-      const browser = await puppeteer.launch({
-        headless: true,
+      const browser = await chromium.puppeteer.launch({
+        args: chromium.args,
+        headless: chromium.headless,
         slowMo: 150,
-        devtools: true,
-        args: ['--window-size=1920,1080'],
+        executablePath: await chromium.executablePath,
         defaultViewport: null,
+        ignoreHTTPSErrors: true
       })
       const page = await browser.newPage()
       await page.goto('https://www.mercadolibre.com.pe/')
