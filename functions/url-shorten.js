@@ -22,15 +22,4 @@ async function shortenUrl(url) {
   return response
 }
 
-shortenUrl(longUrl)
-  .then((response) => {
-    if (!response.status === 200) {
-      throw new Error('Error HTTP: ' + response.status)
-    }
-    return response.data.data.tiny_url
-  })
-  .catch((error) => {
-    console.error('Error shortening URL:', error)
-  })
-
 exports.shortenUrl = shortenUrl

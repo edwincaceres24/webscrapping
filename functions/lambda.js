@@ -1,5 +1,4 @@
 const { whastappTrigger } = require('./sms')
-const { shortenUrl } = require('./url-shorten')
 
 function productFiltering(productArray, lowPrice, highPrice, searchTerm) {
   const result = Array.from(productArray).filter((productItem) => {
